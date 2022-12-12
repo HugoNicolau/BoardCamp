@@ -16,7 +16,18 @@ export async function getCustomers(req, res){
         res.sendStatus(500);
     }
 }
-
+export async function getCustomersById(req, res){
+    const findCustomer = Number(req.params.id);
+    if(findCustomer){
+        
+        const searching = await connectionDB.query(`SELECT * FROM customers WHERE id=($1);`,[`${findCustomer}`])
+        
+        if(searching.rows.length===0){
+            return res.sendStatus(404);
+        }
+        return res.status(200).send(searching.rows);
+    }
+}
 export async function postCustomers(req, res){
     const customer = res.locals.customer;
     const {name, phone, cpf, birthday} = customer;
