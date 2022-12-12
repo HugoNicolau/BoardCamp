@@ -1,7 +1,31 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "joi": "^17.7.0",
     "pg": "^8.8.0"
-  }
+  },
+  "name": "boardcamp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HugoNicolau/BoardCamp.git"
+  },
+  "author": "Hugo Nicolau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HugoNicolau/BoardCamp/issues"
+  },
+  "homepage": "https://github.com/HugoNicolau/BoardCamp#readme",
+  "description": ""
 }
