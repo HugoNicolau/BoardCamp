@@ -1,4 +1,5 @@
 import categoriesRoutes from "./routes/categoriesRoutes.js"
+import gamesRoutes from "./routes/gamesRoutes.js"
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';

@@ -1,6 +1,6 @@
-import joi from "joi";
+import Joi from "joi";
 
-export const categorySchema = joi.object({
-    name: joi.string().required().min(2),
+export const categorySchema = Joi.object({
+    name: Joi.string().required().min(2),
     
 })
