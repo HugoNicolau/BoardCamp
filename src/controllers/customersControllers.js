@@ -4,7 +4,7 @@ export async function getCustomers(req, res){
     const findCustomer = req.query.cpf
 
     if(findCustomer){
-        const searching = await connectionDB.query(`SELECT * FROM customers WHERE name ILIKE ($1);`,[`${findCustomer}%`])
+        const searching = await connectionDB.query(`SELECT * FROM customers WHERE cpf ILIKE ($1);`,[`${findCustomer}%`])
         return res.status(200).send(searching.rows);
     }
 
