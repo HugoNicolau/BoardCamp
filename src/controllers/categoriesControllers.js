@@ -13,7 +13,7 @@ try{
 }
 
 export async function postCategories (req, res){
-    const name = req.body.name;
+    const name = res.locals.name;
     
     
     try{
