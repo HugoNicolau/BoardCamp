@@ -64,7 +64,7 @@ export async function returnRental(req, res){
     const id = req.params.id;
     try{
         const rental = await connectionDB.query(`SELECT * FROM rentals WHERE id=$1;`,[id]);
-        if(!rental){
+        if(!rental || rental.rowCount<1){
             return res.sendStatus(404);
         }
         if(rental.rows[0].returnDate){
@@ -90,4 +90,23 @@ export async function returnRental(req, res){
         return res.sendStatus(500);
     }
 
+}
+
+export async function deleteRental(req, res){
+    const id = req.params.id;
+    try{
+        const rental = await connectionDB.query(`SELECT * FROM rentals WHERE id=$1;`,[id]);
+        if(!rental || rental.rowCount<1){
+            return res.sendStatus(404);
+        }
+        if(!rental.rows[0].returnDate){
+            return res.sendStatus(400);
+        }
+        await connectionDB.query(`DELETE FROM rentals WHERE id=$1;`,[id]);
+        return res.sendStatus(200);
+        
+    }catch(err){
+        console.log(err);
+        return res.sendStatus(500);
+    }
 }
