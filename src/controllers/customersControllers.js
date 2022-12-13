@@ -3,12 +3,12 @@ import { connectionDB } from "../database/database.js";
 export async function getCustomers(req, res){
     const findCustomer = req.query.cpf
 
-    if(findCustomer){
-        const searching = await connectionDB.query(`SELECT * FROM customers WHERE cpf ILIKE ($1);`,[`${findCustomer}%`])
-        return res.status(200).send(searching.rows);
-    }
-
+    
     try{
+        if(findCustomer){
+            const searching = await connectionDB.query(`SELECT * FROM customers WHERE cpf ILIKE ($1);`,[`${findCustomer}%`])
+            return res.status(200).send(searching.rows);
+        }
         const customers = await connectionDB.query(`Select * FROM customers`);
         return res.status(200).send(customers.rows);
     }catch(err){
@@ -17,16 +17,24 @@ export async function getCustomers(req, res){
     }
 }
 export async function getCustomersById(req, res){
-    const findCustomer = Number(req.params.id);
-    if(findCustomer){
-        
-        const searching = await connectionDB.query(`SELECT * FROM customers WHERE id=($1);`,[`${findCustomer}`])
-        
-        if(searching.rows.length===0){
-            return res.sendStatus(404);
+
+
+    try{
+        const findCustomer = Number(req.params.id);
+        if(findCustomer){
+            
+            const searching = await connectionDB.query(`SELECT * FROM customers WHERE id=($1);`,[`${findCustomer}`])
+            
+            if(searching.rows.length===0){
+                return res.sendStatus(404);
+            }
+            return res.status(200).send(searching.rows);
         }
-        return res.status(200).send(searching.rows);
-    }
+        
+            }catch(err){
+                console.log(err);
+                return res.sendStatus(500);
+            }
 }
 export async function postCustomers(req, res){
     const customer = res.locals.customer;

@@ -2,13 +2,13 @@ import { connectionDB } from "../database/database.js";
 
 export async function getGames(req,res){
     const findGame = req.query.name;
-
-    if(findGame){
-        const searching = await connectionDB.query(`SELECT * FROM games WHERE name ILIKE ($1);`,[`${findGame}%`]);
-        return res.status(200).send(searching.rows);
-    }
-
+    
     try{
+        
+            if(findGame){
+                const searching = await connectionDB.query(`SELECT * FROM games WHERE name ILIKE ($1);`,[`${findGame}%`]);
+                return res.status(200).send(searching.rows);
+            }
         const games = await connectionDB.query(`SELECT * FROM games`)
         return res.status(200).send(games.rows);
     }catch(err){
