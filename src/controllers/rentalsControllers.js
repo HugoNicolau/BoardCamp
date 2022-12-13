@@ -5,16 +5,39 @@ export async function getRentals(req, res){
     const findGame = req.query.gameId;
     try{
         if(findCustomer){
-        const allRentals = await connectionDB.query(`SELECT * FROM rentals JOIN customers ON "customerId" = customers.id JOIN games ON "gameId" = games.id WHERE "customerId" ILIKE ($1);`,[findCustomer])
-            return res.status(200).send(allRentals);
+        const allRentals = await connectionDB.query(`
+        SELECT rentals.*, json_build_object('id',customers.id, 'name', customers.name) 
+        AS customer, json_build_object('id', games.id, 'name', games.name, 'categoryId', games."categoryId", 'categoryName', categories.name) 
+        AS game 
+        FROM rentals 
+        JOIN customers ON "customerId" = customers.id 
+        JOIN games ON "gameId" = games.id
+        JOIN categories ON categories.id = games."categoryId" 
+        WHERE "customerId"=($1);`,[findCustomer])
+            return res.status(200).send(allRentals.rows);
         }
         if(findGame){
-            const allRentals = await connectionDB.query(`SELECT * FROM rentals JOIN customers ON "customerId" = customers.id JOIN games ON "gameId" = games.id WHERE "gameId" ILIKE ($1);`,[findGame])
-                return res.status(200).send(allRentals);
+            const allRentals = await connectionDB.query(`
+            SELECT rentals.*, json_build_object('id',customers.id, 'name', customers.name) 
+            AS customer, json_build_object('id', games.id, 'name', games.name, 'categoryId', games."categoryId", 'categoryName', categories.name) 
+            AS game 
+            FROM rentals 
+            JOIN customers ON "customerId" = customers.id 
+            JOIN games ON "gameId" = games.id
+            JOIN categories ON categories.id = games."categoryId" 
+            WHERE "gameId"=($1);`,[findGame])
+                return res.status(200).send(allRentals.rows);
             }
-        const allRentals = await connectionDB.query(`SELECT * FROM rentals JOIN customers ON "customerId" = customers.id JOIN games ON "gameId" = games.id;`)
-        console.log(allRentals);
-        return res.status(200).send(allRentals);
+        const allRentals = await connectionDB.query(`
+        SELECT rentals.*, json_build_object('id',customers.id, 'name', customers.name) 
+        AS customer, json_build_object('id', games.id, 'name', games.name, 'categoryId', games."categoryId", 'categoryName', categories.name) 
+        AS game 
+        FROM rentals 
+        JOIN customers ON "customerId" = customers.id 
+        JOIN games ON "gameId" = games.id
+        JOIN categories ON categories.id = games."categoryId"; 
+        `);
+        return res.status(200).send(allRentals.rows);
     }catch(err){
         console.log(err);
         return res.sendStatus(500);

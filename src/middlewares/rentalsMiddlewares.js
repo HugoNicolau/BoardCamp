@@ -8,7 +8,6 @@ export async function rentalSchemaValidation(req, res, next){
     
     const findCustomer = (await connectionDB.query(`SELECT * FROM customers WHERE id = $1;`,[customerId])).rows;
     if(!findCustomer){
-    console.log(findCustomer, "customerrr");
 
         return res.sendStatus(400);
     }
@@ -28,7 +27,6 @@ export async function rentalSchemaValidation(req, res, next){
     const gamesRented = (await connectionDB.query(`SELECT * FROM rentals WHERE "gameId" = $1;`,[gameId])).rows.length;
 
     if(gamesRented >= gamesAvailable){
-        console.log(findCustomer, "customerr111111r");
         return res.sendStatus(400);
 
     }
